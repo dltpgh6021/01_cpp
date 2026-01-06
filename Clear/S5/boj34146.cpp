@@ -8,7 +8,7 @@ int main(void) {
 
     int n, m;
     bool possible = true;
-    int *matrix = new int[10001];
+    int *matrix = new int[10001]();
     queue<int> q;
     int input;
 
@@ -18,7 +18,7 @@ int main(void) {
         scanf("%d", &input);
         getchar();
 
-        if(!matrix[input]) {
+        if(matrix[input] == 0) {
             q.push(input);
         }
         matrix[input]++;
@@ -54,6 +54,8 @@ int main(void) {
 
     if(possible) cout << "YES\n";
     else cout << "NO\n";
+
+    delete matrix;
 
     return 0;
 }
