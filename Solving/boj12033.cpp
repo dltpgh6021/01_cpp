@@ -36,7 +36,7 @@ void search(int *arr, int n) {
         if(clear[i]) {i++; continue;}
 
         for (int j = i + 1; j < n * 2; j++) {
-            if((arr[i] / 3) * 4 == arr[j]) {
+            if((arr[i] / 3) * 4 == arr[j] && !clear[j]) {
                 clear[i] = true;
                 clear[j] = true;
                 break;
