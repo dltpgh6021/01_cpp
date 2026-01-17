@@ -10,8 +10,10 @@ int main(void) {
     cin >> n >> a >> b >> m;
 
     int *score = new int[n];
+    int *room = new int[n];
     int *changeStack = new int[n];
-    for(int i = 0; i < n; i++) changeStack[i] = 0;
+    for (int i = 0; i < n; i++) { room[i] = i; changeStack[i] = 0; }
+
     int hongPos = 0;
     int joPos = a - 1;
     int posDay = 0;
@@ -25,10 +27,10 @@ int main(void) {
             posDays++;
             if(maxPosDays < posDays) maxPosDays = posDays;
         }
-        else {
-            posDays = 0;
-        }
+        else posDays = 0; 
+
         if (i == m - 1) break;
+
         // 상벌점 입력 받기
         for(int j = 0; j < n; j++) cin >> score[j]; 
         int minus;
@@ -37,37 +39,40 @@ int main(void) {
             score[j] -= minus;
             score[j] += changeStack[j];
         }
-        for(int j = 0; j < n; j++) changeStack[j] = 0;
+
+        for (int i = 0; i < n; i++) changeStack[i] = 0;
 
         // 상벌점 계산을 통한 방 바꾸기
         for (int j = 0; j < n - 1; j++) {
-            if ((score[j] >= 0 && score[j + 1] >= 0 && score[j + 1] - score[j] >= 2) || 
-            (score[j] < 0 && score[j + 1] >= 0) || 
-            (score[j] < 0 && score[j + 1] < 0 && score[j + 1] - score[j] >= 4)) {
-                int t;
-                t = score[j + 1];
-                score[j + 1] = score[j];
-                score[j] = t;
+            int p, q;
+            p = score[room[j]];
+            q = score[room[j + 1]];
 
-                if (joPos == j) joPos++;
-                if (joPos == j + 1) joPos--;
-                if (hongPos == j) hongPos++;
-                if (hongPos == j + 1) hongPos--;
+            if ( ( p > 0 && q > 0 && q - p >= 2 ) || 
+            ( p < 0 && q > 0 ) || 
+            ( p < 0 && q < 0 && q - p >= 4 ) ) {
+                if(room[j] == hongPos) hongPos = room[j + 1];
+                if(room[j + 1] == hongPos) hongPos = room[j];
+                if(room[j] == joPos) joPos = room[j + 1];
+                if(room[j + 1] == joPos) joPos = room[j];
 
-                if(changeStack[j] > 0) {
-                    changeStack[j + 1] = 2 + changeStack[j];
-                    changeStack[j] = -2;
-                }
-                else changeStack[j] = -2;
+                int tmp;
+                tmp = room[j];
+                room[j] = room[j + 1];
+                room[j + 1] = tmp;
+
+                changeStack[room[j]] -= 2;
+                changeStack[room[j + 1]] += 2;
             }
-
         }
         
     }
 
-    cout << posDay << ' ' << posDays;
+    cout << posDay << ' ' << maxPosDays;
 
     delete score;
+    delete changeStack;
+    delete room;
 
     return 0;
 }
