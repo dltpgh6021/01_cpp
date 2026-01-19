@@ -23,7 +23,7 @@ int main(void) {
         }
     }
 
-    if(maxL < (tiles / maxL)) maxL = tiles / maxL;
+    if (maxL < (tiles / maxL)) maxL = tiles / maxL;
 
     cout << maxL << ' ' << tiles / maxL << '\n';
 
